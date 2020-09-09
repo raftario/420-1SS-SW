@@ -69,18 +69,20 @@ namespace FileScanner.ViewModels
             {
                 FolderItems.Add(item);
             }
+
+
         }
 
         IEnumerable<string> GetDirFiles(string dir)
         {            
-            foreach (var item in Directory.EnumerateFileSystemEntries(dir, "*"))
+            foreach (var d in Directory.EnumerateDirectories(dir, "*"))
             {
-                yield return item;
-            }
+                yield return d;
 
-            foreach (var item in Directory.EnumerateFiles(dir, "*"))
-            {
-                yield return item;
+                foreach (var f in Directory.EnumerateFiles(d, "*"))
+                {
+                    yield return f;
+                }
             }
         }
 
