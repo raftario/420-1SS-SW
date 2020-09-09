@@ -62,27 +62,19 @@ namespace FileScanner.ViewModels
 
         private void ScanFolder(string dir)
         {
-            FolderItems = new ObservableCollection<string>(GetDirFiles(dir));
-         
+            FolderItems = new ObservableCollection<string>(GetDirs(dir));
             
             foreach (var item in Directory.EnumerateFiles(dir, "*"))
             {
                 FolderItems.Add(item);
             }
-
-
         }
 
-        IEnumerable<string> GetDirFiles(string dir)
+        IEnumerable<string> GetDirs(string dir)
         {            
             foreach (var d in Directory.EnumerateDirectories(dir, "*"))
             {
                 yield return d;
-
-                foreach (var f in Directory.EnumerateFiles(d, "*"))
-                {
-                    yield return f;
-                }
             }
         }
 
