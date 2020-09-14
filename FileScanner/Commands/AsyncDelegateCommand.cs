@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FileScanner.Commands
 {
-    public class DelegateCommand<T> : ICommand
+    public class AsyncDelegateCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;
-        private readonly Action<T> _execute;
+        private readonly Func<T, Task> _execute;
 
-        public DelegateCommand(Action<T> execute)
+        public AsyncDelegateCommand(Func<T, Task> execute)
             : this(execute, null)
         {
         }
 
-        public DelegateCommand(Action<T> execute, Predicate<T> canExecute)
+        public AsyncDelegateCommand(Func<T, Task> execute, Predicate<T> canExecute)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -27,9 +28,9 @@ namespace FileScanner.Commands
             return _canExecute((T)parameter);
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            _execute((T)parameter);
+            await _execute((T)parameter);
         }
 
         //public event EventHandler CanExecuteChanged

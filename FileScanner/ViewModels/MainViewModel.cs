@@ -16,7 +16,7 @@ namespace FileScanner.ViewModels
         private ObservableCollection<string> folderItems = new ObservableCollection<string>();
          
         public DelegateCommand<string> OpenFolderCommand { get; private set; }
-        public DelegateCommand<string> ScanFolderCommand { get; private set; }
+        public AsyncDelegateCommand<string> ScanFolderCommand { get; private set; }
 
         public ObservableCollection<string> FolderItems { 
             get => folderItems;
@@ -41,7 +41,7 @@ namespace FileScanner.ViewModels
         public MainViewModel()
         {
             OpenFolderCommand = new DelegateCommand<string>(OpenFolder);
-            ScanFolderCommand = new DelegateCommand<string>(ScanFolder, CanExecuteScanFolder);
+            ScanFolderCommand = new AsyncDelegateCommand<string>(ScanFolder, CanExecuteScanFolder);
         }
 
         private bool CanExecuteScanFolder(string obj)
@@ -51,32 +51,34 @@ namespace FileScanner.ViewModels
 
         private void OpenFolder(string obj)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using var fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                if (fbd.ShowDialog() == DialogResult.OK)
-                {
-                    SelectedFolder = fbd.SelectedPath;
-                }
+                SelectedFolder = fbd.SelectedPath;
             }
         }
 
-        private void ScanFolder(string dir)
+        private async Task ScanFolder(string dir)
         {
-            FolderItems = new ObservableCollection<string>(GetDirs(dir));
-            
-            foreach (var item in Directory.EnumerateFiles(dir, "*"))
+            var list = await Task.Run(() =>
             {
-                FolderItems.Add(item);
-            }
+                var list = new List<string>();
+
+                foreach (var d in Directory.EnumerateDirectories(dir, "*"))
+                {
+                    list.Add(d);
+                }
+                foreach (var f in Directory.EnumerateFiles(dir, "*"))
+                {
+                    list.Add(f);
+                }
+
+                return list;
+            });
+
+            FolderItems = new ObservableCollection<string>(list);
         }
 
-        IEnumerable<string> GetDirs(string dir)
-        {            
-            foreach (var d in Directory.EnumerateDirectories(dir, "*"))
-            {
-                yield return d;
-            }
-        }
 
         ///TODO : Tester avec un dossier avec beaucoup de fichier
         ///TODO : Rendre l'application asynchrone
