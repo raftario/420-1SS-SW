@@ -5,20 +5,25 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 
 namespace FileScanner.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        public class FolderItem
+        {
+            public string Image { get; set; }
+            public string Text { get; set; }
+        }
+
         private string selectedFolder;
-        private ObservableCollection<string> folderItems = new ObservableCollection<string>();
+        private ObservableCollection<FolderItem> folderItems = new ObservableCollection<FolderItem>();
          
         public DelegateCommand<string> OpenFolderCommand { get; private set; }
         public AsyncDelegateCommand<string> ScanFolderCommand { get; private set; }
 
-        public ObservableCollection<string> FolderItems { 
+        public ObservableCollection<FolderItem> FolderItems { 
             get => folderItems;
             set 
             { 
@@ -62,21 +67,28 @@ namespace FileScanner.ViewModels
         {
             var list = await Task.Run(() =>
             {
-                var list = new List<string>();
+                var list = new List<FolderItem>();
 
-                foreach (var d in Directory.EnumerateDirectories(dir, "*"))
+                try
                 {
-                    list.Add(d);
+                    foreach (var d in Directory.EnumerateDirectories(dir, "*"))
+                    {
+                        list.Add(new FolderItem { Image = "/Assets/folder.png", Text = d });
+                    }
+                    foreach (var f in Directory.EnumerateFiles(dir, "*"))
+                    {
+                        list.Add(new FolderItem { Image = "/Assets/file.png", Text = f });
+                    }
                 }
-                foreach (var f in Directory.EnumerateFiles(dir, "*"))
+                catch (Exception ex)
                 {
-                    list.Add(f);
+                    MessageBox.Show(ex.Message, "Permission error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 return list;
             });
 
-            FolderItems = new ObservableCollection<string>(list);
+            FolderItems = new ObservableCollection<FolderItem>(list);
         }
 
 
