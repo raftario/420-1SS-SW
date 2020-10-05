@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DogFetchApp"
+        xmlns:p="clr-namespace:DogFetchApp.Properties"
         mc:Ignorable="d"
-        Title="Dog picture fetcher" Height="450" Width="800">
+        Title="{x:Static p:Resources.Title}" Height="450" Width="800">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5"/>
@@ -19,17 +19,17 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Réglage">
-                <MenuItem Header="Langues">
-                    <MenuItem Header="Français"/>
-                    <MenuItem Header="English"/>
+            <MenuItem Header="{x:Static p:Resources.Settings}">
+                <MenuItem Header="{x:Static p:Resources.Language}">
+                    <MenuItem Header="Français" Command="{Binding ChangeLanguageCommand}" CommandParameter="fr"/>
+                    <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock Text="Image URL : "/>
+            <TextBlock Text="{x:Static p:Resources.ImageURL}"/>
             <Hyperlink>
-                <TextBlock Text="Put URL here"/>
+                <TextBlock Text="URL"/>
             </Hyperlink>
         </StatusBar>
         <Grid Margin="5">
@@ -46,7 +46,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Breed : "/>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static p:Resources.Breed}"/>
             <ComboBox Grid.Column="1" Grid.Row="0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -54,14 +54,14 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <TextBlock Grid.Row="1" Text="Nombre de photos :"/>
+            <TextBlock Grid.Row="1" Text="{x:Static p:Resources.PictureCount}"/>
             <ComboBox Grid.Row="1" Grid.Column="1">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="3"/>
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="10"/>
             </ComboBox>
-            <Button Grid.Row="2" Grid.Column="1" Content="Fetch!" Width="150"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="{x:Static p:Resources.Fetch}" Width="150"/>
             <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -84,8 +84,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                    <Button Content="Previous" Margin="10"/>
-                    <Button Content="Next" Margin="10"/>
+                    <Button Content="{x:Static p:Resources.Previous}" Margin="10"/>
+                    <Button Content="{x:Static p:Resources.Next}" Margin="10"/>
                 </StackPanel>
             </Grid>
         </Grid>
