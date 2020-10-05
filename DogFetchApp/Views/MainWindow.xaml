@@ -47,13 +47,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static p:Resources.Breed}"/>
-            <ComboBox Grid.Column="1" Grid.Row="0">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding BreedList}" SelectedItem="{Binding SelectedBreed}"></ComboBox>
             <TextBlock Grid.Row="1" Text="{x:Static p:Resources.PictureCount}"/>
             <ComboBox Grid.Row="1" Grid.Column="1">
                 <ComboBoxItem Content="1"/>
