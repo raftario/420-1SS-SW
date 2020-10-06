@@ -123,9 +123,6 @@
   <data name="Fetch" xml:space="preserve">
     <value>Charger</value>
   </data>
-  <data name="ImageURL" xml:space="preserve">
-    <value>URL de l'image</value>
-  </data>
   <data name="Language" xml:space="preserve">
     <value>Langue</value>
   </data>

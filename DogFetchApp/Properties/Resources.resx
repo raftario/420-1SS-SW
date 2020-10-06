@@ -123,9 +123,6 @@
   <data name="Fetch" xml:space="preserve">
     <value>Fetch</value>
   </data>
-  <data name="ImageURL" xml:space="preserve">
-    <value>Image URL</value>
-  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>

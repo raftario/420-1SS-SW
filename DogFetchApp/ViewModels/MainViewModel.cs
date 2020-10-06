@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace DogFetchApp.ViewModels
@@ -23,17 +25,56 @@ namespace DogFetchApp.ViewModels
             }
         }
 
+        private int _selectedCount = 5;
+        public int SelectedCount
+        {
+            get => _selectedCount;
+            set
+            {
+                _selectedCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _breedsLoaded = false;
+        public bool BreedsLoaded
+        {
+            get => _breedsLoaded;
+            set
+            {
+                _breedsLoaded = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _nextEnabled = false;
+        public bool NextEnabled
+        {
+            get => _nextEnabled;
+            set
+            {
+                _nextEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<string> BreedList { get; set; }
+        public ObservableCollection<int> CountList { get; set; }
+        public ObservableCollection<string> DogImages { get; set; }
 
         public DelegateCommand<string> ChangeLanguageCommand { get; set; }
+        public AsyncCommand<object> FetchDogsCommand { get; set; }
 
         public MainViewModel()
         {
             ChangeLanguageCommand = new DelegateCommand<string>(ChangeLanguage);
+            FetchDogsCommand = new AsyncCommand<object>(FetchDogs);
             BreedList = new ObservableCollection<string>();
+            CountList = new ObservableCollection<int> { 1, 2, 3, 5, 10 };
+            DogImages = new ObservableCollection<string>();
 
             ApiHelper.ApiHelper.InitializeClient();
-            UpdateBreedList();
+            InitBreedList();
         }
 
         internal void ChangeLanguage(string lang)
@@ -55,11 +96,10 @@ namespace DogFetchApp.ViewModels
             }
         }
 
-        private async void UpdateBreedList()
+        private async void InitBreedList()
         {
-            BreedList.Clear();
-
             var breeds = await DogApiProcessor.LoadBreedList();
+            BreedList.Clear();
             foreach (var breed in breeds)
             {
                 BreedList.Add(breed);
@@ -68,7 +108,20 @@ namespace DogFetchApp.ViewModels
             if (BreedList.Count > 0)
             {
                 SelectedBreed = BreedList[0];
+                BreedsLoaded = true;
             }
+        }
+
+        private async Task FetchDogs(object _)
+        {
+            var imageUrls = await Task.WhenAll(Enumerable.Range(0, SelectedCount).Select(_ => DogApiProcessor.GetImageUrl(SelectedBreed)));
+            DogImages.Clear();
+            foreach (var url in imageUrls)
+            {
+                DogImages.Add(url);
+            }
+
+            NextEnabled = true;
         }
     }
 }

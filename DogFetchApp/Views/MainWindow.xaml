@@ -26,12 +26,6 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock Text="{x:Static p:Resources.ImageURL}"/>
-            <Hyperlink>
-                <TextBlock Text="URL"/>
-            </Hyperlink>
-        </StatusBar>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -47,21 +41,16 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static p:Resources.Breed}"/>
-            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding BreedList}" SelectedItem="{Binding SelectedBreed}"></ComboBox>
+            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding BreedList}" SelectedItem="{Binding SelectedBreed}" IsEnabled="{Binding BreedsLoaded}"/>
             <TextBlock Grid.Row="1" Text="{x:Static p:Resources.PictureCount}"/>
-            <ComboBox Grid.Row="1" Grid.Column="1">
-                <ComboBoxItem Content="1"/>
-                <ComboBoxItem Content="3"/>
-                <ComboBoxItem Content="5"/>
-                <ComboBoxItem Content="10"/>
-            </ComboBox>
-            <Button Grid.Row="2" Grid.Column="1" Content="{x:Static p:Resources.Fetch}" Width="150"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding CountList}" SelectedItem="{Binding SelectedCount}"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="{x:Static p:Resources.Fetch}" Command="{Binding FetchDogsCommand}" CommandParameter="" IsEnabled="{Binding BreedsLoaded}" Width="150"/>
             <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ListView Grid.Row="0" ItemsSource="{Binding}">
+                <ListView Grid.Row="0" ItemsSource="{Binding DogImages}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>
@@ -70,16 +59,13 @@
                     <!-- Vous pouvez utiliser le contrôle que vous voulez pour présenter les photos -->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                <Image Source="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill"/>
-                                <TextBlock Text="{Binding }" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
-                            </StackPanel>
+                            <Image Source="{Binding}" MaxHeight="100"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                    <Button Content="{x:Static p:Resources.Previous}" Margin="10"/>
-                    <Button Content="{x:Static p:Resources.Next}" Margin="10"/>
+                    <Button Content="{x:Static p:Resources.Previous}" Margin="10" IsEnabled="False"/>
+                    <Button Content="{x:Static p:Resources.Next}" Margin="10" Command="{Binding FetchDogsCommand}" CommandParameter="" IsEnabled="{Binding NextEnabled}"/>
                 </StackPanel>
             </Grid>
         </Grid>

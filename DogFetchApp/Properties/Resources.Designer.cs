@@ -79,15 +79,6 @@ namespace DogFetchApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image URL.
-        /// </summary>
-        public static string ImageURL {
-            get {
-                return ResourceManager.GetString("ImageURL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
