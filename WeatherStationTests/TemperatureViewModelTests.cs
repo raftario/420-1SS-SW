@@ -26,7 +26,7 @@ namespace WeatherStationTests
         [InlineData(-17.8, 0)]
         [InlineData(37, 98.6)]
         [InlineData(100, 212)]
-        public void CelsisInFahrenheit_AlwaysReturnGoodValue(double C, double expected)
+        public void CelsiusInFahrenheit_AlwaysReturnGoodValue(double C, double expected)
         {
             // Arrange
 
