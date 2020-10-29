@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using WeatherApp.Models;
 using WeatherApp.Services;
 using WeatherApp.ViewModels;
 using Xunit;
@@ -87,6 +89,7 @@ namespace WeatherStationTests
         public void CanGetTemp_WhenServiceIsNull_ReturnsFalse()
         {
             // Arrange
+            _sut.SetTemperatureService(null);
 
             // Act       
             var condition = _sut.CanGetTemp();
@@ -120,13 +123,12 @@ namespace WeatherStationTests
         public void SetTemperatureService_WhenExecuted_TemperatureServiceIsNotNull()
         {
             // Arrange
-            _sut.SetTemperatureService(new OpenWeatherService());
 
             // Act       
-            var condition = _sut.TemperatureService is null;
+            _sut.SetTemperatureService(new OpenWeatherService());
 
             // Assert
-            Assert.False(condition);
+            Assert.NotNull(_sut.TemperatureService);
         }
 
         /// <summary>
@@ -137,12 +139,16 @@ namespace WeatherStationTests
         public void GetTempCommand_HaveCurrentTempWhenExecuted_ShouldPass()
         {
             // Arrange
+            var mock = new Mock<ITemperatureService>();
+            mock.Setup((s) => s.GetTempAsync())
+                .ReturnsAsync(new TemperatureModel { DateTime = DateTime.Now, Temperature = 2112 });
+            _sut.SetTemperatureService(mock.Object);
 
             // Act       
+            _sut.GetTempCommand.Execute(null);
 
             // Assert
-
-            /// TODO : git commit -a -m "T07 GetTempCommand_HaveCurrentTempWhenExecuted_ShouldPass : Done"
+            Assert.Equal(2112, _sut.CurrentTemp.Temperature);
         }
 
         /// <summary>
