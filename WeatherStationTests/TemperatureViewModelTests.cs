@@ -23,7 +23,7 @@ namespace WeatherStationTests
         [InlineData(0, 32)]
         [InlineData(-40, -40)]
         [InlineData(-20, -4)]
-        [InlineData(-17.8, 0)]
+        [InlineData(-17.8, 0)] // ????
         [InlineData(37, 98.6)]
         [InlineData(100, 212)]
         public void CelsiusInFahrenheit_AlwaysReturnGoodValue(double C, double expected)
@@ -31,10 +31,10 @@ namespace WeatherStationTests
             // Arrange
 
             // Act       
+            var actual = TemperatureViewModel.CelsisInFahrenheit(C);
 
             // Assert
-
-            /// TODO : git commit -a -m "T01 CelsisInFahrenheit_AlwaysReturnGoodValue : Done"
+            Assert.Equal(expected, actual, 1); // Une seule décimale de précision pour matcher les test cases
         }
 
         /// <summary>

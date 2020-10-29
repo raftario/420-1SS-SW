@@ -6,6 +6,6 @@ namespace WeatherApp.ViewModels
 {
     public class TemperatureViewModel : BaseViewModel
     {
-        /// TODO : Ajoutez le code nécessaire pour réussir les tests et répondre aux requis du projet
+        public static double CelsisInFahrenheit(double c) => c * (9d / 5d) + 32;
     }
 }
