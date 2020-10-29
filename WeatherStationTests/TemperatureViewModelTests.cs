@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using WeatherApp.Services;
 using WeatherApp.ViewModels;
 using Xunit;
 using Xunit.Sdk;
@@ -102,12 +103,13 @@ namespace WeatherStationTests
         public void CanGetTemp_WhenServiceIsSet_ReturnsTrue()
         {
             // Arrange
+            _sut.SetTemperatureService(new OpenWeatherService());
 
             // Act       
+            var condition = _sut.CanGetTemp();
 
             // Assert
-
-            /// TODO : git commit -a -m "T05 CanGetTemp_WhenServiceIsSet_ReturnsTrue : Done"
+            Assert.True(condition);
         }
 
         /// <summary>
