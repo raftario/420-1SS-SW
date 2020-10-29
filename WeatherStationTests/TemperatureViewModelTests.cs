@@ -120,12 +120,13 @@ namespace WeatherStationTests
         public void SetTemperatureService_WhenExecuted_TemperatureServiceIsNotNull()
         {
             // Arrange
+            _sut.SetTemperatureService(new OpenWeatherService());
 
             // Act       
+            var condition = _sut.TemperatureService is null;
 
             // Assert
-
-            /// TODO : git commit -a -m "T06 SetTemperatureService_WhenExecuted_TemperatureServiceIsNotNull : Done"
+            Assert.False(condition);
         }
 
         /// <summary>
