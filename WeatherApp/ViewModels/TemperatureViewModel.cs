@@ -34,6 +34,8 @@ namespace WeatherApp.ViewModels
 
         public static double FahrenheitInCelsius(double f) => (f - 32) * (5d / 9d);
 
+        public bool CanGetTemp() => !(TemperatureService is null);
+
         private void GetTemp(object _)
         {
             if (TemperatureService is null)
