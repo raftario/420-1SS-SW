@@ -66,6 +66,7 @@ namespace OpenWeatherAPI
 
         /// <summary>
         /// Appel le endpoint weather
+        /// TODO 13 : Gestion vers l'utilisateur si la clé ou ville invalide
         /// </summary>
         /// <returns></returns>
         public async Task<OWCurrentWeaterModel> GetCurrentWeatherAsync()

@@ -68,8 +68,14 @@ namespace WeatherApp.ViewModels
             GetTempCommand = new DelegateCommand<string>(GetTemp, CanGetTemp);
         }
 
+        /// <summary>
+        /// TODO 12 : Valider que la clé est là
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public bool CanGetTemp(string obj)
         {
+            
             return TemperatureService != null;
         }
 
