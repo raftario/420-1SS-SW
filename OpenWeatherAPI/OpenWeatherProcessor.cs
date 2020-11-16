@@ -50,7 +50,8 @@ namespace OpenWeatherAPI
         /// <returns></returns>
         public async Task<OpenWeatherOneCallModel> GetOneCallAsync()
         {
-            
+            ValidateArguments();
+
             EndPoint = $"/onecall?";
 
             /// Src : https://stackoverflow.com/a/14517976/503842
@@ -75,6 +76,8 @@ namespace OpenWeatherAPI
         /// <returns></returns>
         public async Task<OWCurrentWeaterModel> GetCurrentWeatherAsync()
         {
+            ValidateArguments();
+
             EndPoint = $"/weather?";
 
             /// Src : https://stackoverflow.com/a/14517976/503842
@@ -118,6 +121,19 @@ namespace OpenWeatherAPI
 
                 return null;
 
+            }
+        }
+
+        private void ValidateArguments()
+        {
+            if (string.IsNullOrEmpty(ApiKey))
+            {
+                throw new ArgumentException("API key is null or empty");
+            }
+
+            if (ApiHelper.ApiClient is null)
+            {
+                throw new ArgumentException("HTTP client is not initialised");
             }
         }
     }
