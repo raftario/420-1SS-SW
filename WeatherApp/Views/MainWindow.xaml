@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
-        <Button DockPanel.Dock="Top" Content="Load content TODO"/>
-        <TextBox Text="TODO"/>
+        <Button DockPanel.Dock="Top" Content="Load content" Command="{Binding GetTempCommand}" CommandParameter=""/>
+        <Label Content="{Binding RawText}"/>
     </DockPanel>
 </Window>

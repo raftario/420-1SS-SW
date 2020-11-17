@@ -22,13 +22,11 @@ namespace WeatherApp.Services
         public async Task<TemperatureModel> GetTempAsync()
         {
             var cw = await owp.GetCurrentWeatherAsync();
-            var temp = new TemperatureModel();
-
-            temp.Temperature = cw.Main.Temperature;
-
-            temp.DateTime = DateTime.UnixEpoch;
-            temp.DateTime.AddSeconds(cw.DateTime);
-            temp.DateTime = temp.DateTime.ToLocalTime();
+            var temp = new TemperatureModel
+            {
+                Temperature = cw.Main.Temperature,
+                DateTime = DateTime.UnixEpoch.AddSeconds(cw.DateTime).ToLocalTime()
+            };
 
             LastTemp = temp;
             return temp;

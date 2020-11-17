@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WeatherApp.Commands;
+using WeatherApp.Configuration;
 using WeatherApp.Models;
+using WeatherApp.Services;
 
 namespace WeatherApp.ViewModels
 {
@@ -36,6 +38,8 @@ namespace WeatherApp.ViewModels
         public TemperatureViewModel()
         {
             GetTempCommand = new DelegateCommand<string>(GetTemp, CanGetTemp);
+            TemperatureService = new OpenWeatherService(AppConfiguration.GetValue("api-key"));
+            OpenWeatherAPI.ApiHelper.InitializeClient();
         }
 
         public bool CanGetTemp(string obj)
