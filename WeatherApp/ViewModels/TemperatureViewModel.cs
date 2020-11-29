@@ -26,7 +26,6 @@ namespace WeatherApp.ViewModels
         private string city;
 
 
-        /// TODO -- : Juste pour vous voyez la nouvelle propriété ici
         /// <summary>
         /// Ville pour effectuer la recherche
         /// </summary>
@@ -52,7 +51,14 @@ namespace WeatherApp.ViewModels
         {
             get
             {
-                return _rawText;
+                if (!CanGetTemp(null))
+                {
+                    return "Aucune clé API, veuillez la configurer";
+                }
+                else
+                {
+                    return _rawText;
+                }
             }
             set
             {
@@ -69,14 +75,12 @@ namespace WeatherApp.ViewModels
         }
 
         /// <summary>
-        /// TODO 12 : Valider que la clé est là
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         public bool CanGetTemp(string obj)
         {
-            
-            return TemperatureService != null;
+            return TemperatureService != null && !string.IsNullOrEmpty(Properties.Settings.Default.apiKey);
         }
 
         public void GetTemp(string obj)
@@ -89,6 +93,11 @@ namespace WeatherApp.ViewModels
         private async Task GetTempAsync()
         {
             CurrentTemp = await TemperatureService.GetTempAsync();
+            if (CurrentTemp is null)
+            {
+                RawText = "Une erreur est survenue, veuillez vérifier la clé API et le nom de la ville";
+                return;
+            }
 
             RawText = $"Time : {CurrentTemp.DateTime.ToLocalTime()} {Environment.NewLine}Temperature : {CurrentTemp.Temperature}";
         }
@@ -106,6 +115,7 @@ namespace WeatherApp.ViewModels
         public void SetTemperatureService(ITemperatureService srv)
         {
             TemperatureService = srv;
+            OnPropertyChanged(nameof(RawText));
         }
     }
 }

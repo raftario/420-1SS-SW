@@ -21,6 +21,11 @@ namespace WeatherApp.Services
         {
             var temp = await owp.GetCurrentWeatherAsync();
 
+            if (temp is null)
+            {
+                return null;
+            }
+
             var result = new TemperatureModel
             {
                 DateTime = DateTime.UnixEpoch.AddSeconds(temp.DateTime),
